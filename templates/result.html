@@ -40,7 +40,7 @@
               How this works
             </a>
             <span class="navbar-item">
-              <a class="button is-success is-inverted" href="https://github.com/liuhh02">
+              <a class="button is-success is-inverted" href="https://github.com/anuya-padte">
                 <span class="icon">
                   <i class="fas fa-info-circle"></i>
                 </span>
@@ -56,7 +56,7 @@
   <!-- Hero content: will be in the middle -->
   <div class="hero-body">
     <div class="container has-text-centered">
-      <img type="image/png" src="{{ url_for('send_img', filename=file_name) }}">
+      <img type="image/png" src="{{ url_for('send_img', filename= the_file) }}">
       <br>
 
       <fieldset>
@@ -66,7 +66,7 @@
         <script type=text/javascript>
           $(function(){
             $('a#play').bind('click', function() {
-              $.getJSON('/play_midi_file',
+              $.getJSON('/play_midi_file/{{file_name}}',
               function(data){
                 // do nothing
               });
@@ -97,23 +97,6 @@
           </div>
           <div class="level-item has-text-centered">
         </nav>
-        <nav class="level-right">
-            <h2 class="subtitle">
-            <strong> Share this! </strong>
-            </h2>
-            </nav>
-        <nav class="level-right">
-            <a class="button is-medium is-facebook" href="https://www.facebook.com/campaign/landing.php?&campaign_id=1635645017&extra_1=s%7Cc%7C313627652532%7Ce%7Cfacebook%7C&placement=&creative=313627652532&keyword=facebook&partner_id=googlesem&extra_2=campaignid%3D1635645017%26adgroupid%3D60549328697%26matchtype%3De%26network%3Dg%26source%3Dnotmobile%26search_or_content%3Ds%26device%3Dc%26devicemodel%3D%26adposition%3D1t1%26target%3D%26targetid%3Dkwd-541132862%26loc_physical_ms%3D9062531%26loc_interest_ms%3D%26feeditemid%3D%26param1%3D%26param2%3D&gclid=CjwKCAiAzuPuBRAIEiwAkkmOSFJk3Ljc25ImzaP8OuNBzxjw5Jf3jgrQzjZrW2GjoqOeI1eAdpBxJxoCClMQAvD_BwE">
-              <span class="fab fa-facebook"></span>
-            </a>
-            <a class="button is-medium is-twitter" href="https://twitter.com/?lang=en">
-              <span class="fab fa-twitter"></span>
-            </a>
-            <a class="button is-medium is-instagram" href="https://www.instagram.com/">
-              <span class="fab fa-instagram"></span>
-            </a>
-            </nav>
-
     </div>
   </div>
 

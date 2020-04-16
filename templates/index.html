@@ -42,7 +42,7 @@
               How this works
             </a>
             <span class="navbar-item">
-              <a class="button is-success is-inverted" href="https://github.com/liuhh02">
+              <a class="button is-success is-inverted" href="https://github.com/anuya-padte">
                 <span class="icon">
                   <i class="fas fa-info-circle"></i>
                 </span>
@@ -64,7 +64,7 @@
      <form action="{{ url_for('predict')}}" method="post" enctype="multipart/form-data">
         <div id="file-js-example" class="file has-name is-centered is-boxed">
           <label class="file-label">
-            <input class="file-input" type="file" name="file">
+            <input class="file-input" type="file" name="file" id="file">
             <span class="file-cta">
               <span class="file-icon">
                 <i class="fas fa-upload"></i>
@@ -78,14 +78,40 @@
             </span>
           </label>
         </div>
+        <div id="imagePreview"></div>
 
         <script>
           const fileInput = document.querySelector('#file-js-example input[type=file]');
           fileInput.onchange = () => {
-            if (fileInput.files.length > 0) {
-              const fileName = document.querySelector('#file-js-example .file-name');
-              fileName.textContent = fileInput.files[0].name;
-            }
+            var fileInput =  
+                document.getElementById('file'); 
+              
+            var filePath = fileInput.value; 
+          
+            // Allowing file type 
+            var allowedExtensions =  
+                    /(\.jpg|\.jpeg|\.png)$/i; 
+              
+            if (!allowedExtensions.exec(filePath)) { 
+                alert('Invalid file type'); 
+                fileInput.value = ''; 
+                return false; 
+            }  
+            else{
+                // Image preview 
+                if (fileInput.files && fileInput.files[0]) { 
+                    var reader = new FileReader(); 
+                    reader.onload = function(e) { 
+                        document.getElementById( 
+                            'imagePreview').innerHTML =  
+                            '<img src="' + e.target.result 
+                            + '"/>'; 
+                    }; 
+                    reader.readAsDataURL(fileInput.files[0]);
+                    const fileName = document.querySelector('#file-js-example .file-name');
+                    fileName.textContent = fileInput.files[0].name;
+                } 
+            } 
           }
         </script>
         <br>
