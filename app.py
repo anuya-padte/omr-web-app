@@ -48,6 +48,10 @@ def resize(image, height):
     sample_img = cv2.resize(image, (width, height))
     return sample_img
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 voc_file = "vocabulary_semantic.txt"
 model = "Semantic-Model/semantic_model.meta"
 
@@ -64,6 +68,7 @@ dict_file.close()
 
 # Create a directory in a known location to save files to.
 output_dir = os.path.join('server_files')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 # Restore weights
 saver = tf.train.import_meta_graph(model)
@@ -114,6 +119,10 @@ def root():
 def predict():
     if request.method == 'POST':
         f = request.files['file']
+        if f and allowed_file(f.filename):
+            name_of_file = secure_filename(f.filename)
+            f.save(output_dir+"/img/"+name_of_file)
+
         img = f
         image = Image.open(img).convert('L')
         image = np.array(image)
@@ -135,13 +144,14 @@ def predict():
         for w in str_predictions[0]:
             array_of_notes.append(int2word[w])
 
-        # name_of_file = f.filename.split('.')[0]
-        # semantic_file_path = output_dir+"/semantic/"+name_of_file+".semantic"
-        # midi_file_path = output_dir+"/midi/"+name_of_file+".mid"
-        name_of_file = f.filename
+        name_of_file = f.filename.split('.')[0]
+        semantic_file_path = output_dir+"/semantic/"+name_of_file+".semantic"
+        midi_file_path = output_dir+"/midi/"+name_of_file+".mid"
 
-        semantic_file_path = output_dir+"/output.semantic"
-        midi_file_path = output_dir+"/output.mid"
+        #name_of_file = f.filename
+        #semantic_file_path = output_dir+"/output.semantic"
+        #midi_file_path = output_dir+"/output.mid"
+
         file2 = open(semantic_file_path,"w")
         for word in array_of_notes:
             file2.write(word+"\t")
