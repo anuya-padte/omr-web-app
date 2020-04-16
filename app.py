@@ -88,22 +88,22 @@ WIDTH_REDUCTION, HEIGHT = sess.run([width_reduction_tensor, height_tensor])
 
 decoded, _ = tf.nn.ctc_greedy_decoder(logits, seq_len)
 
-@app.route('/server_files/<filename>')
+@app.route('/server_files/img/<filename>')
 def send_img(filename):
-    return send_from_directory(output_dir, filename)
+    return send_from_directory(output_dir+"/img/", filename)
 
-@app.route('/play_midi_file')
-def play_midi_file():
+@app.route('/play_midi_file/<filename>')
+def play_midi_file(filename):
     pygame.mixer.init()
     freq, size, chan = pygame.mixer.get_init()
     BUFFER = 3072
-    filename = output_dir+"/output.mid"
+    file_loc = output_dir+"/midi/"+filename+".mid"
     pygame.mixer.init(freq, size, chan, BUFFER)
 
     pygame.init()
     pygame.mixer.init()
     clock = pygame.time.Clock()
-    pygame.mixer.music.load(filename)
+    pygame.mixer.music.load(file_loc)
     pygame.mixer.music.play()
     print("play song")
     while pygame.mixer.music.get_busy():
@@ -147,8 +147,8 @@ def predict():
         name_of_file = f.filename.split('.')[0]
         semantic_file_path = output_dir+"/semantic/"+name_of_file+".semantic"
         midi_file_path = output_dir+"/midi/"+name_of_file+".mid"
+        the_file = f.filename
 
-        #name_of_file = f.filename
         #semantic_file_path = output_dir+"/output.semantic"
         #midi_file_path = output_dir+"/output.mid"
 
@@ -156,9 +156,8 @@ def predict():
         for word in array_of_notes:
             file2.write(word+"\t")
         file2.close()
-        # img.save(output_dir+"/output.png")
         subprocess.call(['java', '-cp', 'primus_conversor/omr-3.0-SNAPSHOT.jar', 'es.ua.dlsi.im3.omr.encoding.semantic.SemanticImporter', semantic_file_path, midi_file_path])
-    return render_template('result.html', file_name = name_of_file)
+    return render_template('result.html', file_name = name_of_file, the_file = the_file)
 
 if __name__=="__main__":
     app.run()
